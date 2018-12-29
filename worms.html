@@ -40,7 +40,7 @@
     {
         this.load.image('bg', 'wintertileset/png/BG/BG.png');
         this.load.image('ground', 'wintertileset/png/Tiles/2.png');
-        this.load.spritesheet('worm', 'worms.png', { frameWidth: 18, frameHeight: 21 });
+        this.load.spritesheet('worm', 'worm2.png', { frameWidth: 12.5, frameHeight: 16 });
     }
 
     function create ()
@@ -64,21 +64,21 @@
 
       this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('worm', { start: 8, end: 13 }),
-        frameRate: 10,
+        frames: this.anims.generateFrameNumbers('worm', { start: 0, end: 1 }),
+        frameRate: 4,
         repeat: -1
       });
 
       this.anims.create({
           key: 'turn',
-          frames: [ { key: 'worm', frame: 7 } ],
+          frames: [ { key: 'worm', frame: 2 } ],
           frameRate: 20
       });
 
       this.anims.create({
           key: 'right',
-          frames: this.anims.generateFrameNumbers('worm', { start: 0, end: 6 }),
-          frameRate: 10,
+          frames: this.anims.generateFrameNumbers('worm', { start: 2, end: 3 }),
+          frameRate: 4,
           repeat: -1
       });
 
@@ -90,13 +90,13 @@
     {
         if (cursors.left.isDown)
         {
-            player.setVelocityX(-60);
+            player.setVelocityX(-40);
 
             player.anims.play('left', true);
         }
         else if (cursors.right.isDown)
         {
-            player.setVelocityX(60);
+            player.setVelocityX(40);
 
             player.anims.play('right', true);
         }
