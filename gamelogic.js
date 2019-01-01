@@ -4,6 +4,7 @@
 // turn consists of movement and attack
 // movement phase ends when attack phase begins
 // grenade explosion within radius of worm does X damage
+// health points using phaser => https://phaser.io/docs/2.4.4/Phaser.Component.Health.html
 // when attack has taken place turn is over
 // turn goes to next worm (player) in state array
 // when one worm's health reaches 0, game is over
@@ -17,7 +18,7 @@ let state = {
     name: 'worm 2',
     hp: 100
   }],
-  currentPlayer: ''
+  currentPlayer: 0
 }
 
 // changes player turn

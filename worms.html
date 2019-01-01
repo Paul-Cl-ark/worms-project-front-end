@@ -41,6 +41,8 @@
         this.load.image('bg', 'wintertileset/png/BG/BG.png');
         this.load.image('ground', 'wintertileset/png/Tiles/2.png');
         this.load.spritesheet('worm', 'worm2.png', { frameWidth: 12.5, frameHeight: 16 });
+        this.load.spritesheet('grenade', 'grenade-spritesheet.png', { frameWidth: 10.875, frameHeight: 16 });
+        this.load.spritesheet('worm-with-grenade', 'worm-with-grenade.png', { frameWidth: 15.666, frameHeight: 16 });
     }
 
     function create ()
@@ -81,9 +83,16 @@
           frameRate: 4,
           repeat: -1
       });
-
+      this.anims.create({
+          key: 'down',
+          frames: this.anims.generateFrameNumbers('worm-with-grenade', { start: 0, end: 0 }),
+          frameRate: 4,
+          repeat: -1
+      });
+// debugger
       cursors = this.input.keyboard.createCursorKeys();
-
+      // aimButton = this.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+      // debugger
     }
 
     function update ()
@@ -111,6 +120,11 @@
         {
             player.setVelocityY(-100);
         }
+        //
+        if (cursors.down.isDown) {
+            player.anims.play('down')
+        }
+
     }
 
 </script>
