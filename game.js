@@ -79,9 +79,6 @@ function create () {
   });
 
   // create an explosion
-    // explosions = game.add.group();
-    // explosions.createMultiple(30, 'kaboom');
-    // explosions.forEach(setupInvader, this);
 
   
   cursors = this.input.keyboard.createCursorKeys();
@@ -89,37 +86,44 @@ function create () {
 //   aimButton = this.input.keyboard.addKey(Phaser.Keyboard.DOWN);
 }
 
-function createGrenade(game) {
+function createGrenade(game, p) {
       // a grenade that a worm will fire
-      grenade = game.physics.add.sprite(player.x, player.y, 'grenade');
+      grenade = game.physics.add.sprite(p.x, p.y, 'grenade');
       
       // enable physics
     //   game.physics.enable(grenade, Phaser.Physics.ARCADE);
       
     // add velocity
-      grenade.setVelocity(100, -150);
+      grenade.setVelocity(p.dir === 'left' ? -100 : 100, -150);
       grenade.setBounce(0.7);
       grenade.body.drag.set(20);
       game.physics.add.collider(grenade, platforms);
-      game.physics.add.collider(grenade, player);
+      game.physics.add.collider(grenade, p);
+
+      setTimeout(() => {
+        grenade.destroy()
+        grenade = undefined
+      }, 5000)
 }
 
 function update () {
     if (cursors.left.isDown) {
+        player.dir = 'left';
         player.setVelocityX(-40);
         player.anims.play('left', true);
     } else if (cursors.right.isDown) {
+        player.dir = 'right';
         player.setVelocityX(40);
         player.anims.play('right', true);
     } else {
         player.setVelocityX(0);
-        player.anims.play('turn');
+        // player.anims.play('turn');
     } if (cursors.up.isDown && player.body.touching.down) {
         player.setVelocityY(-100);
     }
     if (cursors.down.isDown) {
-        if (!this.grenade) { 
-            createGrenade(this)
+        if (!grenade) { 
+            createGrenade(this, player)
         }
     }
     if (this.grenade) {
