@@ -37,10 +37,12 @@ function nextPlayer (currentPlayer) {
 // add enter button input to switch to aim mode
 
 this.aimButton = this.input.keyboard.addKey(Phaser.Keyboard.ENTER)
+console.log(this)
 this.aimButton.onDown(aim())
 
 function aim () {
   if (this.grenade.exists) {
+    console.log(this.grenade)
     return
   }
 
