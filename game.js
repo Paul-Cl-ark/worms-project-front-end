@@ -43,13 +43,12 @@ function create () {
   platforms.create(449, 535, 'ground');
   platforms.create(577, 535, 'ground');
   platforms.create(705, 535, 'ground');
-  platforms.create(705, 535, 'ground');
   platforms.create(833, 535, 'ground');
 
   player = this.physics.add.sprite(300, 440, 'worm');
   player.setCollideWorldBounds(true);
   this.physics.add.collider(player, platforms);
-
+    console.log(this)
     // worm animation, turing, walking left and right 
   this.anims.create({
     key: 'left',
@@ -78,24 +77,31 @@ function create () {
       frameRate: 4,
       repeat: -1
   });
+
+  // create an explosion
+    // explosions = game.add.group();
+    // explosions.createMultiple(30, 'kaboom');
+    // explosions.forEach(setupInvader, this);
+
   
   cursors = this.input.keyboard.createCursorKeys();
-
-
   console.log(cursors)
 //   aimButton = this.input.keyboard.addKey(Phaser.Keyboard.DOWN);
 }
 
 function createGrenade(game) {
       // a grenade that a worm will fire
-      console.log(game)
-      this.grenade = game.add.sprite(player.x, player.y, 'grenade')
+      grenade = game.physics.add.sprite(player.x, player.y, 'grenade');
+      
       // enable physics
     //   game.physics.enable(grenade, Phaser.Physics.ARCADE);
-      // add velocity
-    //   grenade.setVelocity(100, 200);
-    //   grenade.setBounce(1, 1);
       
+    // add velocity
+      grenade.setVelocity(100, -150);
+      grenade.setBounce(0.7);
+      grenade.body.drag.set(20);
+      game.physics.add.collider(grenade, platforms);
+      game.physics.add.collider(grenade, player);
 }
 
 function update () {
@@ -112,13 +118,14 @@ function update () {
         player.setVelocityY(-100);
     }
     if (cursors.down.isDown) {
-        player.anims.play('down')
         if (!this.grenade) { 
             createGrenade(this)
         }
     }
     if (this.grenade) {
         // grenade.setCollideWorldBounds(true);
+        // this.physics.add.collider(grenade, platforms);
+        // this.physics.add.collider(grenade, player);
     }
 }
 
