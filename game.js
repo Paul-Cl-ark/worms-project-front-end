@@ -16,7 +16,7 @@ const config = {
   }
 }
 
-const game = new Phaser.Game(config)
+let game = new Phaser.Game(config)
 let player = null
 let player2 = null
 let grenade = null
@@ -111,12 +111,20 @@ function createGrenade (game, p) {
   game.physics.add.collider(grenade, p)
 
   // measures distances between grenade and player
-  // Phaser.Math.distance(p.x, p.y, grenade.x, grenade.y)
 
   // makes grenade disappear after 5 seconds
   setTimeout(() => {
+    // console.log(p.x, p.y, grenade.x)
+    // console.log(Phaser.Math)
+    let distanceFromP2 = Phaser.Math.Distance.Between(player2.x, player2.y, grenade.x, grenade.y)
+    // console.log(Phaser.Math.Distance.Between(p.x, p.y, grenade.x, grenade.y))
+    // console.log(Phaser.Math.Distance(p.x, p.y, grenade.x, grenade.y))
+    if (distanceFromP2 < 50) {
+      alert('P2 died')
+      game.reset()
+    }
     grenade.destroy()
-    grenade = undefined
+    grenade = null
   }, 5000)
 }
 
