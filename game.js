@@ -22,6 +22,7 @@ let player2 = null
 let grenade = null
 let platforms = null
 let cursors = null
+let gameOver = false
 
 function preload () {
   this.load.image('bg', 'wintertileset/png/BG/BG.png')
@@ -33,6 +34,16 @@ function preload () {
 }
 
 function create () {
+  // fetch('http://localhost:3000/api/v1/users', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify({
+  //     'name': 'bob'
+  //   })
+  // })
+
   // A background for the game
   this.add.image(600, 400, 'bg')
 
@@ -107,13 +118,13 @@ function createGrenade (game, p) {
   // add velocity to grenade (angle dependant on way worm if facing and speed)
   grenade.setVelocity(p.dir === 'left' ? -100 : 100, -150)
   grenade.setBounce(0.7)
-  grenade.body.drag.set(20)
+  grenade.body.drag.set(29)
   game.physics.add.collider(grenade, platforms)
   game.physics.add.collider(grenade, p)
 
   // measures distances between grenade and player
 
-  // makes grenade disappear after 5 seconds
+  // makes grenade disappear (explode) after 5 seconds
   setTimeout(() => {
 
     let distanceFromP2 = Phaser.Math.Distance.Between(player2.x, player2.y, grenade.x, grenade.y)
@@ -122,7 +133,18 @@ function createGrenade (game, p) {
       // alert('P2 died')
       player2.health -= 100
       if (player2.health === 0) {
+        gameOver = true
         alert('player 1 wins')
+        fetch('http://localhost:3000/api/v1/scores', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            'score': '1',
+            'user_id': '1'
+          })
+        })
       }
     }
     grenade.destroy()
@@ -131,7 +153,9 @@ function createGrenade (game, p) {
 }
 
 function update () {
-
+  if (gameOver) {
+    return
+  }
   // enables worm1 movement and animation on input
   if (cursors.left.isDown) {
     player.dir = 'left'
