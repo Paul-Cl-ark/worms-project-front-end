@@ -25,12 +25,14 @@ let cursors = null
 let gameOver = false
 
 function preload () {
-  this.load.image('bg', 'wintertileset/png/BG/BG.png')
-  this.load.image('ground', 'wintertileset/png/Tiles/2.png')
+    this.load.audio('forestAudio', 'assets/audio/Forest.mp3');
+    this.load.image('bg', 'wintertileset/png/BG/BG.png')
+    this.load.image('ground', 'wintertileset/png/Tiles/2.png')
 
-  this.load.spritesheet('worm', 'assets/worm2.png', { frameWidth: 12.5, frameHeight: 16 })
-  this.load.spritesheet('grenade', 'assets/grenade-spritesheet.png', { frameWidth: 10.875, frameHeight: 16 })
-  this.load.spritesheet('worm-with-grenade', 'assets/worm-with-grenade.png', { frameWidth: 15.666, frameHeight: 16 })
+    this.load.spritesheet('worm', 'assets/worm2.png', { frameWidth: 12.5, frameHeight: 16 })
+    this.load.spritesheet('grenade', 'assets/grenade-spritesheet.png', { frameWidth: 10.875, frameHeight: 16 })
+    this.load.spritesheet('worm-with-grenade', 'assets/worm-with-grenade.png', { frameWidth: 15.666, frameHeight: 16 })
+
 }
 
 function create () {
@@ -47,6 +49,8 @@ function create () {
   // A background for the game
   this.add.image(600, 400, 'bg')
 
+
+
   // creates the ground
   platforms = this.physics.add.staticGroup()
   platforms.create(65, 535, 'ground')
@@ -57,9 +61,15 @@ function create () {
   platforms.create(705, 535, 'ground')
   platforms.create(833, 535, 'ground')
 
+   // playing sound audio for game
+   let sound = this.sound.add('forestAudio');
+  sound.play();
+
+
   // creating worm1
 
   player = this.physics.add.sprite(300, 440, 'worm')
+  player.health = 100
   player.setCollideWorldBounds(true)
   this.physics.add.collider(player, platforms)
 
@@ -127,10 +137,13 @@ function createGrenade (game, p) {
   // makes grenade disappear (explode) after 5 seconds
   setTimeout(() => {
 
-    let distanceFromP2 = Phaser.Math.Distance.Between(player2.x, player2.y, grenade.x, grenade.y)
+    let distanceFromP2 = Phaser.Math.Distance.Between(player2.x, player2.y, grenade.x, grenade.y);
+    // console.log(distanceFromP2)
+
+    let distanceFromP1 = Phaser.Math.Distance.Between(player.x, player.y, grenade.x, grenade.y);
+    console.log(distanceFromP1)
 
     if (distanceFromP2 < 50) {
-      // alert('P2 died')
       player2.health -= 100
       if (player2.health === 0) {
         gameOver = true
@@ -145,6 +158,11 @@ function createGrenade (game, p) {
             'user_id': '1'
           })
         })
+      } else if (distanceFromP1 < 50) {
+        player.health -= 100
+        if (player.health === 0) {
+          alert('player 2 wins')
+        }
       }
     }
     grenade.destroy()
