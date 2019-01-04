@@ -158,11 +158,11 @@ function createGrenade (game, p) {
             'user_id': '1'
           })
         })
-      } else if (distanceFromP1 < 50) {
-        player.health -= 100
-        if (player.health === 0) {
-          alert('player 2 wins')
-        }
+      }
+    } else if (distanceFromP1 < 50) {
+      player.health -= 100
+      if (player.health === 0) {
+    alert('player 2 wins')
       }
     }
     grenade.destroy()
