@@ -55,6 +55,7 @@ function create () {
   // creating worm2
 
   player2 = this.physics.add.sprite(500, 440, 'worm')
+  player2.health = 100
   player2.setCollideWorldBounds(true)
   this.physics.add.collider(player2, platforms)
 
@@ -114,14 +115,15 @@ function createGrenade (game, p) {
 
   // makes grenade disappear after 5 seconds
   setTimeout(() => {
-    // console.log(p.x, p.y, grenade.x)
-    // console.log(Phaser.Math)
+
     let distanceFromP2 = Phaser.Math.Distance.Between(player2.x, player2.y, grenade.x, grenade.y)
-    // console.log(Phaser.Math.Distance.Between(p.x, p.y, grenade.x, grenade.y))
-    // console.log(Phaser.Math.Distance(p.x, p.y, grenade.x, grenade.y))
+
     if (distanceFromP2 < 50) {
-      alert('P2 died')
-      game.reset()
+      // alert('P2 died')
+      player2.health -= 100
+      if (player2.health === 0) {
+        alert('player 1 wins')
+      }
     }
     grenade.destroy()
     grenade = null
